@@ -1,6 +1,6 @@
 
 function refreshWeather(response) {
-    // inject temperature and city into the interface from the response
+    // inject temperature and city etc into the interface from the response
     let temperatureElement = document.querySelector("#temperature");
     let temperature = Math.round(response.data.temperature.current);
     let cityElement = document.querySelector("#city");

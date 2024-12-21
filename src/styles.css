@@ -28,6 +28,7 @@ header {
     width: 80%;
     padding: 15px 20px;
     font-size: 16px;
+    border-color: lightgrey;
 }
 
 .search-form-button {
@@ -37,7 +38,7 @@ header {
     border: none;
     margin-left: 5px;
     border-radius: 6px; 
-    color: white;
+    color: white;  
 }
 
 main {
