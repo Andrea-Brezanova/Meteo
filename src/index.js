@@ -54,12 +54,18 @@ function handleSearchSubmit(event) {
     searchCity(cityInput.value);
 }
 
+function formatDay(timestamp) {
+    let date = new Date(timestamp * 1000);
+    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let day = date.getDay();
+    return days[day];
+}
+
 function getForecast(city) {
     let apiKey = "007360a0b0aabc68f2a54boff1b97tfc";
     let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;    
     axios.get(apiUrl).then(displayForecast);
     console.log(apiUrl);
-
 }
 
 
@@ -70,24 +76,26 @@ searchFormElement.addEventListener("submit", handleSearchSubmit);
 
 
 function displayForecast(response) {
-    //console.log(response.data.daily);
+    console.log(response.data);
 
-
-    let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
     let forecastHtml = "";
 
-    days.forEach(function(day) {
-        forecastHtml = forecastHtml + 
-        `
-            <div class="weather-forecast-day">
-                <div class="weather-forecast-date">${day}</div> 
-                <div class="weather-forecast-icon">⛅️</div>
-                <div class="weather-forecast-temperatures">
-                    <div class="weather-forecast-temperature"><strong>16°</strong></div>
-                    <div class="weather-forecast-temperature"><strong>9°</strong></div> 
+    response.data.daily.forEach(function(day, index) {
+        if (index < 5) {
+            forecastHtml = forecastHtml + 
+            `
+                <div class="weather-forecast-day">
+                    <div class="weather-forecast-date">${formatDay(day.time)}</div> 
+                    <div>
+                        <img src="${day.condition.icon_url}" class="weather-forecast-icon"/>
+                    </div>
+                    <div class="weather-forecast-temperatures">
+                        <div class="weather-forecast-temperature"><strong>${Math.round(day.temperature.maximum)}°</strong></div>
+                        <div class="weather-forecast-temperature"><strong>${Math.round(day.temperature.minimum)}°</strong></div> 
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
     });
 
     let forecastElement = document.querySelector("#forecast");
@@ -96,5 +104,4 @@ function displayForecast(response) {
 
 
 searchCity("Paris");
-
 displayForecast();
